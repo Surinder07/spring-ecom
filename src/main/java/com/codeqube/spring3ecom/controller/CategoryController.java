@@ -1,6 +1,8 @@
 package com.codeqube.spring3ecom.controller;
 
 import com.codeqube.spring3ecom.model.Category;
+import com.codeqube.spring3ecom.payload.CategoryDTO;
+import com.codeqube.spring3ecom.payload.CategoryResponse;
 import com.codeqube.spring3ecom.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,15 +23,15 @@ public class CategoryController {
 
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<Category>> getAllCategories(){
-        List<Category> allCategories = categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse> getAllCategories(){
+        CategoryResponse allCategories = categoryService.getAllCategories();
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 
     @PostMapping("/admin/categories")
-    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
-        categoryService.createCategory(category);
-        return new ResponseEntity<>("category added successfully", HttpStatus.CREATED);
+    public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDto) {
+        CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDto);
+        return new ResponseEntity<>(savedCategoryDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")

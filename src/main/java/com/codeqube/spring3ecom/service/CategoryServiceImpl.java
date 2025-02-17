@@ -1,5 +1,6 @@
 package com.codeqube.spring3ecom.service;
 
+import com.codeqube.spring3ecom.exceptions.APIException;
 import com.codeqube.spring3ecom.exceptions.ResourceNotFoundException;
 import com.codeqube.spring3ecom.model.Category;
 import com.codeqube.spring3ecom.repository.CategoryRepository;
@@ -16,11 +17,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> categoryList = categoryRepository.findAll();
+        if (categoryList.isEmpty()){
+            throw new APIException("No Category found!");
+        }
+        return categoryList;
     }
 
     @Override
     public void createCategory(Category category) {
+        Category savedCategory = categoryRepository.findByCategoryName(category.getCategoryName());
+        if (savedCategory != null){
+            throw new APIException("Category with this name " + category.getCategoryName() + "already exists!!");
+        }
         categoryRepository.save(category);
     }
 

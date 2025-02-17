@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService{
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
 
            categoryRepository.delete(originalCategory);
-          return modelMapper.map(categoryRepository, CategoryDTO.class);
+          return modelMapper.map(originalCategory, CategoryDTO.class);
     }
 
     @Override

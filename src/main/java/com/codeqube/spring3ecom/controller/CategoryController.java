@@ -1,5 +1,6 @@
 package com.codeqube.spring3ecom.controller;
 
+import com.codeqube.spring3ecom.config.AppConstants;
 import com.codeqube.spring3ecom.payload.CategoryDTO;
 import com.codeqube.spring3ecom.payload.CategoryResponse;
 import com.codeqube.spring3ecom.service.CategoryService;
@@ -20,9 +21,11 @@ public class CategoryController {
     }
 
     @GetMapping("/public/categories")
-    public ResponseEntity<CategoryResponse> getAllCategories(@RequestParam (name = "pageNumber") Integer pageNumber,
-                                                             @RequestParam (name = "pageSize") Integer pageSize){
-        CategoryResponse allCategories = categoryService.getAllCategories(pageNumber, pageSize);
+    public ResponseEntity<CategoryResponse> getAllCategories(@RequestParam (name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                             @RequestParam (name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+                                                             @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_CATEGORIES_BY, required = false) String sortBy,
+                                                             @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_FIR, required = false) String sortOrder){
+        CategoryResponse allCategories = categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 

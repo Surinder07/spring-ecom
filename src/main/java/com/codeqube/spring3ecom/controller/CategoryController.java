@@ -1,6 +1,5 @@
 package com.codeqube.spring3ecom.controller;
 
-import com.codeqube.spring3ecom.model.Category;
 import com.codeqube.spring3ecom.payload.CategoryDTO;
 import com.codeqube.spring3ecom.payload.CategoryResponse;
 import com.codeqube.spring3ecom.service.CategoryService;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,10 +19,10 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-
     @GetMapping("/public/categories")
-    public ResponseEntity<CategoryResponse> getAllCategories(){
-        CategoryResponse allCategories = categoryService.getAllCategories();
+    public ResponseEntity<CategoryResponse> getAllCategories(@RequestParam (name = "pageNumber") Integer pageNumber,
+                                                             @RequestParam (name = "pageSize") Integer pageSize){
+        CategoryResponse allCategories = categoryService.getAllCategories(pageNumber, pageSize);
         return new ResponseEntity<>(allCategories, HttpStatus.OK);
     }
 

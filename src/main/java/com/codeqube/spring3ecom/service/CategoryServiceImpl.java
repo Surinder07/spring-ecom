@@ -8,6 +8,9 @@ import com.codeqube.spring3ecom.payload.CategoryResponse;
 import com.codeqube.spring3ecom.repository.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +25,11 @@ public class CategoryServiceImpl implements CategoryService{
     private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponse getAllCategories() {
+    public CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize) {
 
-        List<Category> categoryList = categoryRepository.findAll();
+        Pageable pageDetails = PageRequest.of(pageNumber, pageSize);
+        Page<Category> categoryPage = categoryRepository.findAll(pageDetails);
+        List<Category> categoryList = categoryPage.getContent();
 
         if (categoryList.isEmpty()){
             throw new APIException("No Category found!");
